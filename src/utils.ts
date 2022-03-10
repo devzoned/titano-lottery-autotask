@@ -13,6 +13,9 @@ export const getTicketPrice = async (
   usd: number,
   precision: number
 ): Promise<string> => {
+  if (chainId === 97) {
+    return "1000000000000000";
+  }
   // Bind the smart contract address to the Chainlink AggregatorV3Interface ABI, for the given network.
   const contract = await new Contract(config.Chainlink.Oracle[chainId], AggregatorV3InterfaceABI, provider);
 
