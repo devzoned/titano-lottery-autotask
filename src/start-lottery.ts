@@ -23,7 +23,7 @@ export async function handler(credentials: RelayerParams) {
   if (currentLotteryStatus !== 1) {
     try {
       console.log("Lets start new lottery");
-      const endTime = getEndTime();
+      const endTime = getEndTime(chainId);
       const ticketPrice: string = await getTicketPrice(
         provider,
         chainId,
