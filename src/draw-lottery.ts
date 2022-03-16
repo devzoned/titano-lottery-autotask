@@ -43,7 +43,7 @@ export async function handler(credentials: RelayerParams) {
       })(+totalTicketsPerLottery, +firstTicketId, []);
       const ticketsNumbers = (await lotteryContract.viewNumbersAndStatusesForTicketIds(ticketIdsForCurLottery))[0];
       const currentLotteryIdInRng = await rngContract.viewLatestLotteryId();
-      if (currentLotteryIdInRng !== currentLotteryId) {
+      if (!currentLotteryIdInRng.eq(currentLotteryId)) {
         console.log(`In RNG contract random number for this lottery not ready. ${currentLotteryIdInRng}`);
         return;
       }
@@ -69,7 +69,7 @@ export async function handler(credentials: RelayerParams) {
           { from: address, gasLimit: 500000, gasPrice: gasPrice.mul(2) }
         );
         const receipt = await tx.wait();
-        const message = `[${new Date().toISOString()}] chainId=${chainId} message='Closed lottery #${currentLotteryId}' hash=${
+        const message = `[${new Date().toISOString()}] chainId=${chainId} message='Lottery successfully drowned' hash=${
           tx?.hash
         } signer=${address}`;
         console.log(message);
@@ -78,7 +78,7 @@ export async function handler(credentials: RelayerParams) {
       console.log(err);
     }
   } else {
-    console.log(`Current lottery status is: ${currentLotteryStatus}`)
+    console.log(`Current lottery status is: ${currentLotteryStatus}`);
   }
 }
 
